@@ -1,4 +1,5 @@
 import { AppBar, Toolbar } from "@material-ui/core";
+import SelectPlantState from "../Components/SelectPlantState";
 import "./MainPage.css";
 
 /*
@@ -17,7 +18,7 @@ function MainPage() {
         </Toolbar>
       </AppBar>
       <div className="MainPageOptions">
-
+        <SelectPlantState date={"20210606"} name={"6th June 2021"} />
       </div>
     </div>
   );

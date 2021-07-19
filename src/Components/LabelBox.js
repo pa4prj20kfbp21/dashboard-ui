@@ -27,7 +27,7 @@ function LabelBox(props) {
   };
 
   const showBox = (e) => {
-    e.target.style.border = "5px double";
+    e.target.style.border = "5px double yellow";
     setReveal(true);
   };
 
