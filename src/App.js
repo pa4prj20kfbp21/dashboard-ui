@@ -1,7 +1,7 @@
 import MainPage from "./Pages/MainPage";
 import ResultPage from "./Pages/ResultPage";
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import "./App.css";
 
 function App() {
   return (

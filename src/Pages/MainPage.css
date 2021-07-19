@@ -1,0 +1,10 @@
+.MainPageOptions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 10px 10px 10px 10px;
+}
+
+.MainPageOptions * {
+    margin: 10px 10px 10px 10px;
+}
