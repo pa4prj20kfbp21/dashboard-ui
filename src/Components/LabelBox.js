@@ -8,26 +8,27 @@ import { useState } from "react";
   Y: down offset in px
   Height: box height in px
   Width: box width in px
+  Color: color of the outline border
   Data: Object{
     itemType: Red Tomato
     measurement: 25ml
   }
 
   Example HTML component:
-  <LabelBox X={100} Y={150} height={100} width={100} id={1} data={{ "Object": "Red Tomato", "Volume": "65ml" }} />
+  <LabelBox X={100} Y={150} height={100} width={100} color={"blue"} id={1} data={{ "Object": "Red Tomato", "Volume": "65ml" }} />
 */
 function LabelBox(props) {
   const [reveal, setReveal] = useState(false);
 
   const styleSettingBox = {
-    left: `${props.X}px`,
-    top: `${props.Y}px`,
+    left: `${props.X - (reveal ? 5 : 0)}px`,
+    top: `${props.Y - (reveal ? 5 : 0)}px`,
     height: `${props.height}px`,
     width: `${props.width}px`
   };
 
   const showBox = (e) => {
-    e.target.style.border = "5px double";
+    e.target.style.border = `5px double ${props.color ? props.color : "black"}`;
     setReveal(true);
   };
 
