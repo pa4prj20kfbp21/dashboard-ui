@@ -27,9 +27,6 @@ function ResultPage() {
   const [selectedID, setSelectedID] = useState(-1);
   const [cursorPosition, setCursorPosition] = useState({x: 0, y:0});
 
-  const objectProperties = document.getElementById("rpib69420").getBoundingClientRect();
-  const refHeight = objectProperties.height, refWidth = objectProperties.width;
-
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
   };
@@ -46,9 +43,12 @@ function ResultPage() {
   };
 
   const captureMouseInput = (e) => {
+    const objectProperties = document.getElementById("rpib69420").getBoundingClientRect();
     setCursorPosition({
       x: e.clientX - objectProperties.left, 
-      y: e.clientY - objectProperties.top
+      y: e.clientY - objectProperties.top,
+      height: objectProperties.height,
+      width: objectProperties.width
     });
   };
 
@@ -74,17 +74,17 @@ function ResultPage() {
               color={o["color"] || "black"} 
               id={i}
               key={i} 
-              select={changeSelection} />);
-            })
-          }
+              select={changeSelection} 
+            />);
+          })}
         </div>
         {selectedID < 0 ? <></> : <InfoDisplay 
           data={objectsInfo[selectedID]["data"]} 
           x={cursorPosition["x"]} 
           y={cursorPosition["y"]}
-          height={refHeight}
-          width={refWidth}/>
-        }
+          height={cursorPosition["height"]}
+          width={cursorPosition["width"]}
+        />}
       </div>
     </div>
   );
