@@ -1,0 +1,22 @@
+.ResultPageImageBody {
+  position: relative;
+  margin: 10vh 10vw 10vh 10vw;
+  border: black 5px solid;
+  height: 60vh;
+  width: 100%;
+  overflow: auto;
+}
+
+.ResultPageBody {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.ResultPage {
+  height: 100vh;
+}
+
+.ResultPageImageBody img {
+  display: block;
+}

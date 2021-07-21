@@ -1,18 +1,35 @@
+import { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { AppBar, IconButton, Toolbar } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
+import InfoDisplay from "../Components/InfoDisplay";
+import LabelBox from "../Components/LabelBox";
+import "./ResultPage.css";
 
 /*
-    Required props:
-    dateTaken: preferrably in epoch timestamp.
+  Required props:
+  dateTaken: preferrably in epoch timestamp.
 
-    Required states:
-    Medium: image(s) or point cloud if possible. <-- not confirmed.
-    ObjectInfo: Meta information needed for LabelBox.
+  Required states:
+  Medium: image(s) or point cloud if possible. <-- Point Cloud not confirmed.
+  ObjectsInfo: []List of JSON. The JSON should be in the form:
+    ID: used to identify unique of object.
+    X: left offset in px
+    Y: down offset in px
+    Height: box height in px
+    Width: box width in px
+    Color: color of the outline border
 
-    LabelBox component will be used to show plant information below AppBar.
+  LabelBox component will be used to show plant information in ResultPageImageBody.
 */
 function ResultPage() {
+  const objectsInfo = []; // TODO: Populate this without hardcoding.
+  const [selectedID, setSelectedID] = useState(-1);
+  const [cursorPosition, setCursorPosition] = useState({x: 0, y:0});
+
+  const objectProperties = document.getElementById("rpib69420").getBoundingClientRect();
+  const refHeight = objectProperties.height, refWidth = objectProperties.width;
+
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
   };
@@ -24,10 +41,21 @@ function ResultPage() {
     history.push("/home");
   };
 
-  // TODO: helper function that adds LabelBox renders based on props.
+  const changeSelection = (id) => {
+    if(id !== selectedID) setSelectedID(id);
+  };
+
+  const captureMouseInput = (e) => {
+    setCursorPosition({
+      x: e.clientX - objectProperties.left, 
+      y: e.clientY - objectProperties.top
+    });
+  };
+
+  // TODO: helper function that allows rendering different image without hardcoding.
   return (
     <div className="ResultPage">
-      <AppBar position="static">
+      <AppBar position="relative">
         <Toolbar>
           <IconButton aria-label="Return to Home" onClick={returnHome} variant="contained">
             <HomeIcon />
@@ -35,6 +63,29 @@ function ResultPage() {
           <h3>&nbsp;&nbsp;&nbsp;Result for {query.get("name") || query.get("date")}</h3>
         </Toolbar>
       </AppBar>
+      <div className="ResultPageBody">
+        <div className="ResultPageImageBody" onMouseMove={captureMouseInput} id="rpib69420">
+          {objectsInfo.map((o,i) => {
+            return (<LabelBox 
+              X={o["X"]} 
+              Y={o["Y"]} 
+              height={o["height"]} 
+              width={o["width"]} 
+              color={o["color"] || "black"} 
+              id={i}
+              key={i} 
+              select={changeSelection} />);
+            })
+          }
+        </div>
+        {selectedID < 0 ? <></> : <InfoDisplay 
+          data={objectsInfo[selectedID]["data"]} 
+          x={cursorPosition["x"]} 
+          y={cursorPosition["y"]}
+          height={refHeight}
+          width={refWidth}/>
+        }
+      </div>
     </div>
   );
 }

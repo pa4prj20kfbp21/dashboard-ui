@@ -4,18 +4,3 @@ div.LabelBoxArea {
     width: auto;
     height: auto;
 }
-
-.LabelBoxInfo {
-    position: absolute;
-    background-color: #292929;
-    border: 3px solid black;
-    color: #acacac;
-    height: auto;
-    width: auto;
-    right: 0;
-    top: 0px;
-}
-
-.LabelBoxInfo h6,h5,h4 {
-    margin: 5px 5px 5px 5px;
-}

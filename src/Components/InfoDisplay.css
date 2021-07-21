@@ -1,0 +1,12 @@
+.InfoDisplayBox {
+  position: absolute;
+  background-color: #292929;
+  border: 3px solid black;
+  color: #acacac;
+  height: auto;
+  max-width: 35vw;
+}
+
+.InfoDisplayBox h4 {
+  margin: 5px;
+}
