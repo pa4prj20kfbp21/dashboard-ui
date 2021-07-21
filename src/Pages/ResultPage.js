@@ -23,7 +23,38 @@ import "./ResultPage.css";
   LabelBox component will be used to show plant information in ResultPageImageBody.
 */
 function ResultPage() {
-  const objectsInfo = []; // TODO: Populate this without hardcoding.
+  const objectsInfo = [
+    {
+      X: 80,
+      Y: 204,
+      height: 135,
+      width: 132,
+      color: "yellow",
+      data: { "Object": "Red Tomato", "Volume": "65ml" }
+    },{
+      X: 196,
+      Y: 177,
+      height: 120,
+      width: 128,
+      color: "yellow",
+      data: { "Object": "Red Tomato", "Volume": "55ml" }
+    },{
+      X: 85,
+      Y: 19,
+      height: 60,
+      width: 75,
+      color: "red",
+      data: { "Object": "Leaf", "Length": "2.4cm" }
+    },{
+      X: 179,
+      Y: 50,
+      height: 67,
+      width: 50,
+      color: "red",
+      data: { "Object": "Leaf", "Length": "2.2cm" }
+    }
+]; // TODO: Populate this without hardcoding.
+
   const [selectedID, setSelectedID] = useState(-1);
   const [cursorPosition, setCursorPosition] = useState({x: 0, y:0});
 
@@ -65,6 +96,7 @@ function ResultPage() {
       </AppBar>
       <div className="ResultPageBody">
         <div className="ResultPageImageBody" onMouseMove={captureMouseInput} id="rpib69420">
+          <img src={`${query.get("date")}.png`} />
           {objectsInfo.map((o,i) => {
             return (<LabelBox 
               X={o["X"]} 

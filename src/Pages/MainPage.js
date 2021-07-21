@@ -17,7 +17,12 @@ import "./MainPage.css";
 */
 function MainPage() {
   // TODO: helper function to help render buttons without hard-coding them.
-  const options = [];
+  const options = [
+    {
+      date: "20210606",
+      name: "6th June 2021"
+    }
+  ];
 
   return (
     <div className="MainPage">
