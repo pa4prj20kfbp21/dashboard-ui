@@ -24,7 +24,7 @@ function MainPage() {
     const response = await Requests.lazyFetchDates();
     const data = response.ok ? await response.json() : undefined;
     if (data && options.loading) setOptions({data: data, loading: false});
-  });
+  }, []);
 
   return (
     <div className="MainPage">
@@ -35,8 +35,14 @@ function MainPage() {
       </AppBar>
       <div className="MainPageOptions">
         {options.data.map((o, i) => {
-          if (o["Name"]) return <SelectPlantState date={o["Date"].slice(0,10).replaceAll(/-/g, "")} name={o["Name"]} key={i} />;
-          return <SelectPlantState date={o["Date"]} key={i} />;
+          if (o["Name"]) {return <SelectPlantState 
+            date={o["Date"].slice(0,10).replaceAll(/-/g, "")} 
+            name={o["Name"]} 
+            objectId={o["ID"]}
+            key={i} 
+          />;
+          }
+          return <SelectPlantState date={o["Date"]} objectId={o["ID"]} key={i} />;
         })}
       </div>
     </div>
