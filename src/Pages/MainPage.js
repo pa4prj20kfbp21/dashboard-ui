@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { AppBar, Toolbar } from "@material-ui/core";
 import SelectPlantState from "../Components/SelectPlantState";
+import Requests from "../Utils/Requests";
 import "./MainPage.css";
 
 /*
@@ -11,13 +13,18 @@ import "./MainPage.css";
   Required state:
   options: List of JSON in the form:
     {
-      date: "20200606",
-      name: "Example One" <-- optional.
+      Date: "20200606",
+      Name: "Example One"
     }
 */
 function MainPage() {
-  // TODO: helper function to help render buttons without hard-coding them.
-  const options = [];
+  const [options, setOptions] = useState({data: [], loading: true});
+
+  useEffect(async () => {
+    const response = await Requests.lazyFetchDates();
+    const data = response.ok ? await response.json() : undefined;
+    if (data && options.loading) setOptions({data: data, loading: false});
+  });
 
   return (
     <div className="MainPage">
@@ -27,9 +34,9 @@ function MainPage() {
         </Toolbar>
       </AppBar>
       <div className="MainPageOptions">
-        {options.map((o, i) => {
-          if(o["name"]) return <SelectPlantState date={o["date"]} name={o["name"]} key={i}/>;
-          return <SelectPlantState date={o["date"]} key={i}/>;
+        {options.data.map((o, i) => {
+          if (o["Name"]) return <SelectPlantState date={o["Date"].slice(0,10).replaceAll(/-/g, "")} name={o["Name"]} key={i} />;
+          return <SelectPlantState date={o["Date"]} key={i} />;
         })}
       </div>
     </div>
