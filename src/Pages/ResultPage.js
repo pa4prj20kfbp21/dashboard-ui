@@ -113,7 +113,7 @@ function ResultPage() {
   }, [imageSelection]);
 
   const returnHome = () => {
-    history.push("/home");
+    history.push("/home?data-type=dates");
   };
 
   const changeSelection = (id) => {

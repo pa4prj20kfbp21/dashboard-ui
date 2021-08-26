@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { AppBar, Toolbar, FormControl, FormLabel, FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import SelectPlantState from "../Components/SelectPlantState";
 import SelectFruitState from "../Components/SelectFruitState";
@@ -19,8 +20,22 @@ import "./MainPage.css";
     }
 */
 function MainPage() {
+  const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+  };
+
+  let useDataType;
+  const query = useQuery();
+  switch(query.get("data-type")){
+    case "fruits":
+      useDataType = "fruits";
+      break;
+    default:
+      useDataType = "dates";
+  }
+
   const [options, setOptions] = useState({data: [], loading: true});
-  const [dataType, setDataType] = useState("dates");
+  const [dataType, setDataType] = useState(useDataType);
   const [resultList, setResultList] = useState([]);
 
   useEffect(async () => {

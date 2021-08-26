@@ -28,7 +28,7 @@ function FruitTable() {
   const query = useQuery();
 
   const returnHome = () => {
-    history.push("/home");
+    history.push("/home?data-type=fruits");
   };
 
   // Initially get all the object data that can be used to populate the table.
