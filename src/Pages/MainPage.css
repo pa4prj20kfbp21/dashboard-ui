@@ -1,7 +1,15 @@
 .MainPageOptions {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 10px 10px 10px 10px;
+}
+
+.MainPageOptionTypes {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   margin: 10px 10px 10px 10px;
 }
 

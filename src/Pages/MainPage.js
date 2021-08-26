@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { AppBar, Toolbar } from "@material-ui/core";
+import { AppBar, Toolbar, FormControl, FormLabel, FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import SelectPlantState from "../Components/SelectPlantState";
+import SelectFruitState from "../Components/SelectFruitState";
 import Requests from "../Utils/Requests";
 import "./MainPage.css";
 
@@ -19,12 +20,87 @@ import "./MainPage.css";
 */
 function MainPage() {
   const [options, setOptions] = useState({data: [], loading: true});
+  const [dataType, setDataType] = useState("dates");
+  const [resultList, setResultList] = useState([]);
 
   useEffect(async () => {
     const response = await Requests.lazyFetchDates();
     const data = response.ok ? await response.json() : undefined;
     if (data && options.loading) setOptions({data: data, loading: false});
   }, []);
+
+  useEffect(async () => {
+    let response;
+
+    switch(dataType){
+      case "dates": {
+        response = await Requests.lazyFetchDates();
+        break;
+      }
+
+      case "fruits": {
+        response = await Requests.lazyFetchObjects("fruits");
+        break;
+      }
+
+      default: { // In case error.
+        response = await Requests.lazyFetchDates();
+        break;
+      }
+    }
+
+    const data = response.ok ? await response.json() : undefined;
+    setOptions({data: data, loading: false});
+  }, [dataType]);
+
+  
+
+  const renderOptions = () => {
+    const HtmlElements = [];
+
+    switch(dataType){
+      case "dates": 
+        options.data.map((o, i) => {
+          if (o["Name"]) {HtmlElements.push(<SelectPlantState 
+            date={o["Date"].slice(0,10).replaceAll(/-/g, "")} 
+            name={o["Name"]} 
+            objectId={o["ID"]}
+            key={i} 
+          />);
+          }
+          else {
+            HtmlElements.push(<SelectPlantState 
+              date={o["Date"]} 
+              objectId={o["ID"]} 
+              key={i} 
+            />);
+          }
+        });
+        break;
+
+      case "fruits": 
+        options.data.map((o, i) => {
+          HtmlElements.push(<SelectFruitState 
+            date={o["CreatedDate"]} 
+            name={o["Name"]} 
+            objectId={o["EasyId"]}
+            realId={o["ID"]}
+            key={i} 
+          />);
+        });
+        break;
+    }
+    return HtmlElements;
+  };
+
+  useEffect(async () => {
+    setResultList(renderOptions());
+  }, [options]);
+
+  const handleOptionChange = (e) => {
+    e.preventDefault();
+    setDataType(e.target.value);
+  };
 
   return (
     <div className="MainPage">
@@ -33,17 +109,19 @@ function MainPage() {
           <h3>Plant monitoring dashboard</h3>
         </Toolbar>
       </AppBar>
+      <div className="MainPageOptionTypes">
+        <FormControl component="fieldset">
+          <FormLabel component="legend">
+            Get values by:
+          </FormLabel>
+          <RadioGroup row defaultValue="right" value={dataType} onChange={handleOptionChange}>
+            <FormControlLabel value="dates" control={<Radio />} label="Dates" />
+            <FormControlLabel value="fruits" control={<Radio />} label="Fruits" />
+          </RadioGroup>
+        </FormControl>
+      </div>
       <div className="MainPageOptions">
-        {options.data.map((o, i) => {
-          if (o["Name"]) {return <SelectPlantState 
-            date={o["Date"].slice(0,10).replaceAll(/-/g, "")} 
-            name={o["Name"]} 
-            objectId={o["ID"]}
-            key={i} 
-          />;
-          }
-          return <SelectPlantState date={o["Date"]} objectId={o["ID"]} key={i} />;
-        })}
+        {resultList.map(o => {return o;})}
       </div>
     </div>
   );
