@@ -73,6 +73,8 @@ export default class Requests {
   }
 
   static imageURLBuild(rel_path) {
-    return `${process.env.REACT_APP_BACKEND_BASE_URL}/api/images/${rel_path}`;
+    // Dummy dataset has result of form "20210403/2.png" so those do not start with "http".
+    if(!rel_path.startsWith("http")) return `${process.env.REACT_APP_BACKEND_BASE_URL}/api/images/${rel_path}`;
+    return rel_path;
   }
 }

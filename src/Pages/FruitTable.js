@@ -46,7 +46,6 @@ function FruitTable() {
       });
     });
 
-
     const responseFruitCommonInfo = await Requests.fetchDetailedInfoAboutPlantPart(query.get("id"));
     data = responseFruitCommonInfo.ok ? await responseFruitCommonInfo.json() : undefined;
     if (!data && information.loading) setInformation({ Data: {}, loading: false });
@@ -60,7 +59,6 @@ function FruitTable() {
     setInformation({Data: dataResult, loading: false});
   }, []);
 
-  console.log(information);
   return (
     <div className="FruitTable">
       <AppBar position="relative">
@@ -80,7 +78,7 @@ function FruitTable() {
         </Toolbar>
       </AppBar>
       <div className="FruitTableBody">
-
+        
       </div>
     </div>
   );

@@ -39,12 +39,6 @@ function MainPage() {
   const [resultList, setResultList] = useState([]);
 
   useEffect(async () => {
-    const response = await Requests.lazyFetchDates();
-    const data = response.ok ? await response.json() : undefined;
-    if (data && options.loading) setOptions({data: data, loading: false});
-  }, []);
-
-  useEffect(async () => {
     let response;
 
     switch(dataType){
@@ -67,8 +61,6 @@ function MainPage() {
     const data = response.ok ? await response.json() : undefined;
     setOptions({data: data, loading: false});
   }, [dataType]);
-
-  
 
   const renderOptions = () => {
     const HtmlElements = [];
