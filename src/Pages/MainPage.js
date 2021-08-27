@@ -58,7 +58,7 @@ function MainPage() {
       }
     }
 
-    const data = response.ok ? await response.json() : undefined;
+    const data = response.ok ? await response.json() : [];
     setOptions({data: data, loading: false});
   }, [dataType]);
 
