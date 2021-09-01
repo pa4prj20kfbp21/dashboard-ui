@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { AppBar, Toolbar, Box, IconButton } from "@material-ui/core";
+import { AppBar, Toolbar, Box, IconButton, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -16,7 +16,7 @@ import "./FruitTable.css";
 
 const useStyles = makeStyles({
   table: {
-    maxWidth: 1080,
+    minWidth: 200,
   },
 });
 
@@ -53,7 +53,7 @@ function FruitTable() {
     let dataString = [];
     let i = 0;
     try{
-      const keys = Object.keys(data);
+      const keys = Object.keys(data).filter(a => a.toLowerCase() != "environmentref");
       for (const key of keys) dataString.push(<h4 key={i++}>{`${key}: ${data[key]}`}</h4>);
     }catch(e){
       dataString = [];
@@ -116,19 +116,23 @@ function FruitTable() {
                 <TableRow>
                   <TableCell align="center">Date</TableCell>
                   <TableCell align="center">Information</TableCell>
-                  <TableCell align="center">Pictures</TableCell>
+                  <TableCell align="center">Views</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {information.Data.Results.map((data, index) => (
                   <TableRow key={index}>
-                    <TableCell component="th" scope="row">
+                    <TableCell component="th" scope="row" align="center">
                       {data.Updated}
                     </TableCell>
                     <TableCell align="center">
                       {convertJSONtoReadable(data.Data).map(o => {return o;})}
                     </TableCell>
-                    <TableCell align="center">Hello</TableCell>
+                    <TableCell align="center">
+                      <Button variant="outlined">
+                        View Location
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
