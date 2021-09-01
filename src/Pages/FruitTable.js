@@ -1,10 +1,26 @@
 import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { AppBar, Toolbar, Box, IconButton } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
 import Requests from "../Utils/Requests";
-import "./MainPage.css";
+import Paper from "@material-ui/core/Paper";
+import "./FruitTable.css";
+
+const useStyles = makeStyles({
+  table: {
+    maxWidth: 1080,
+  },
+});
+
+const defaultInformationValue = { Data: {Results: []}, loading: false };
 
 /*
   Fruit Table
@@ -14,11 +30,11 @@ import "./MainPage.css";
   ObjectsInfo: []List of JSON. The JSON should be in the form:
     ResultFromTime: [] Data detailing info of plant along with created timestamp.
     PlantInfo: Plant type (in this case is Tomato).
-    EasyID: Human readable ID. <-- Might not include.
+    EasyID: Human readable ID.
 
 */
 function FruitTable() {
-  const [information, setInformation] = useState({ Data: {}, loading: true });
+  const [information, setInformation] = useState({ Data: {Results: []}, loading: true });
 
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -31,24 +47,39 @@ function FruitTable() {
     history.push("/home?data-type=fruits");
   };
 
+  const classes = useStyles();
+
+  const convertJSONtoReadable = (data) => {
+    let dataString = [];
+    let i = 0;
+    try{
+      const keys = Object.keys(data);
+      for (const key of keys) dataString.push(<h4 key={i++}>{`${key}: ${data[key]}`}</h4>);
+    }catch(e){
+      dataString = [];
+    }
+    
+    return dataString;
+  };
+
   // Initially get all the object data that can be used to populate the table.
   useEffect(async () => {
     const responseFruitData = await Requests.fetchAllInfoPlantPart(query.get("id"));
     let data = responseFruitData.ok ? await responseFruitData.json() : undefined;
-    if (!data && information.loading) setInformation({ Data: {}, loading: false });
+    if (!data && information.loading) setInformation(defaultInformationValue);
 
     // Get relevant data info for different times.
     const objectsInfo = [];
     data.forEach((o) => {
       objectsInfo.push({
         Data: o["Data"],
-        Updated: o["createdAt"].slice(0,10).replaceAll(/-/g, "")
+        Updated: o["createdAt"].slice(0, 10).replaceAll(/-/g, "")
       });
     });
 
     const responseFruitCommonInfo = await Requests.fetchDetailedInfoAboutPlantPart(query.get("id"));
     data = responseFruitCommonInfo.ok ? await responseFruitCommonInfo.json() : undefined;
-    if (!data && information.loading) setInformation({ Data: {}, loading: false });
+    if (!data && information.loading) setInformation(defaultInformationValue);
 
     const dataResult = {
       Results: objectsInfo,
@@ -56,14 +87,14 @@ function FruitTable() {
       EasyId: data["EasyId"]
     };
 
-    setInformation({Data: dataResult, loading: false});
+    setInformation({ Data: dataResult, loading: false });
   }, []);
 
   return (
     <div className="FruitTable">
       <AppBar position="relative">
         <Toolbar>
-          <Box display='flex' flexGrow={1}>
+          <Box display="flex" flexGrow={1}>
             <IconButton aria-label="Return to Home" onClick={returnHome} variant="contained">
               <HomeIcon />
             </IconButton>
@@ -78,7 +109,32 @@ function FruitTable() {
         </Toolbar>
       </AppBar>
       <div className="FruitTableBody">
-        
+        <div className="FruitTableData">
+          <TableContainer component={Paper}>
+            <Table className={classes.table} size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">Date</TableCell>
+                  <TableCell align="center">Information</TableCell>
+                  <TableCell align="center">Pictures</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {information.Data.Results.map((data, index) => (
+                  <TableRow key={index}>
+                    <TableCell component="th" scope="row">
+                      {data.Updated}
+                    </TableCell>
+                    <TableCell align="center">
+                      {convertJSONtoReadable(data.Data).map(o => {return o;})}
+                    </TableCell>
+                    <TableCell align="center">Hello</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
       </div>
     </div>
   );
