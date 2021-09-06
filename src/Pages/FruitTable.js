@@ -107,7 +107,7 @@ function FruitTable() {
   // Make picture window appear.
   useEffect(() => {
     if(!showPicture.Show) setPictureWindow(<></>);
-    else setPictureWindow(<DisplaySelectedWindow reference={showPicture.RefId} exit={exitPictureView} />);
+    else setPictureWindow(<DisplaySelectedWindow reference={showPicture.RefId} exit={exitPictureView} ezid={information.Data.EasyId} />);
   }, [showPicture]);
 
   return (
@@ -120,7 +120,7 @@ function FruitTable() {
             </IconButton>
             <h3>
               &nbsp;&nbsp;&nbsp;Table for&nbsp;
-              {information.Data.EasyId > -1 ? `a plant with ID of ${information.Data.EasyId}` : "an item that is still loading or not available!"}
+              {information.Data.EasyId > -1 ? `a plant with ID of ${information.Data.EasyId} ` : "an item that is still loading or not available!"}
             </h3>
           </Box>
           <IconButton aria-label="Information" variant="contained">
