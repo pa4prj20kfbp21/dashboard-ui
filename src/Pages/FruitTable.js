@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { AppBar, Toolbar, Box, IconButton, Button } from "@material-ui/core";
+import DisplaySelectedWindow from "../Components/DisplaySelectedWindow";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -14,6 +15,7 @@ import Requests from "../Utils/Requests";
 import Paper from "@material-ui/core/Paper";
 import "./FruitTable.css";
 
+
 const useStyles = makeStyles({
   table: {
     minWidth: 200,
@@ -21,6 +23,7 @@ const useStyles = makeStyles({
 });
 
 const defaultInformationValue = { Data: {Results: []}, loading: false };
+const defaultNoShowPicture = {Show: false, RefId: ""};
 
 /*
   Fruit Table
@@ -35,6 +38,8 @@ const defaultInformationValue = { Data: {Results: []}, loading: false };
 */
 function FruitTable() {
   const [information, setInformation] = useState({ Data: {Results: []}, loading: true });
+  const [showPicture, setShowPicture] = useState(defaultNoShowPicture);
+  const [pictureWindow, setPictureWindow] = useState(<></>);
 
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -48,6 +53,15 @@ function FruitTable() {
   };
 
   const classes = useStyles();
+
+  const showPictureOnScreen = (e, referId) => {
+    e.preventDefault();
+    setShowPicture({Show: true, RefId: referId});
+  };
+
+  const exitPictureView = () => {
+    setShowPicture(defaultNoShowPicture);
+  };
 
   const convertJSONtoReadable = (data) => {
     let dataString = [];
@@ -90,6 +104,12 @@ function FruitTable() {
     setInformation({ Data: dataResult, loading: false });
   }, []);
 
+  // Make picture window appear.
+  useEffect(() => {
+    if(!showPicture.Show) setPictureWindow(<></>);
+    else setPictureWindow(<DisplaySelectedWindow reference={showPicture.RefId} exit={exitPictureView} />);
+  }, [showPicture]);
+
   return (
     <div className="FruitTable">
       <AppBar position="relative">
@@ -129,7 +149,7 @@ function FruitTable() {
                       {convertJSONtoReadable(data.Data).map(o => {return o;})}
                     </TableCell>
                     <TableCell align="center">
-                      <Button variant="outlined">
+                      <Button variant="outlined" onClick={(e) => {showPictureOnScreen(e, data.Data["EnvironmentRef"]);}}>
                         View Location
                       </Button>
                     </TableCell>
@@ -139,6 +159,7 @@ function FruitTable() {
             </Table>
           </TableContainer>
         </div>
+        {pictureWindow}
       </div>
     </div>
   );

@@ -29,7 +29,18 @@ export default class Requests {
   }
 
   static async fetchDate(id) {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/dates/${id}`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/dates/id/${id}`, {
+      headers: {
+        Accept: "application/json; charset=utf-8"
+      },
+      method: "GET"
+    });
+
+    return response;
+  }
+
+  static async fetchDateByRefId(id) {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/dates/envRef/${id}`, {
       headers: {
         Accept: "application/json; charset=utf-8"
       },
