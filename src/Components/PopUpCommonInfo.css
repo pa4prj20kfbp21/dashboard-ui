@@ -5,6 +5,7 @@
   overflow-y: scroll;
   top: 80px; 
   margin: 10vh 30vw 10vh 30vw;
+  padding: 10px;
   background-color: white;
   border: black 5px solid;
 }

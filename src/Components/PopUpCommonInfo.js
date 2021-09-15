@@ -25,7 +25,7 @@ function PopUpCommonInfo(props){
         const keys = Object.keys(neededData);
         let newInfo = [];
         let i = 0;
-        for (const key of keys) newInfo.push(<h4 key={i++}>&nbsp;{`${key}: ${neededData[key]}`}</h4>);
+        for (const key of keys) newInfo.push(<h4 key={i++}>{`${key}: ${neededData[key]}`}</h4>);
         setInformation(newInfo);
       }catch(err){
         setInformation([]);
@@ -35,7 +35,7 @@ function PopUpCommonInfo(props){
         let dataString = [];
         let i = 0;
         const keys = Object.keys(props.info);
-        for (const key of keys) dataString.push(<h4 key={i++}>&nbsp;{`${key}: ${props.info[key]}`}</h4>);
+        for (const key of keys) dataString.push(<h4 key={i++}>{`${key}: ${props.info[key]}`}</h4>);
         setInformation(dataString);
       }catch(err){
         setInformation([]);
@@ -45,7 +45,7 @@ function PopUpCommonInfo(props){
 
   return (
     <div className="PopUpCommonInfo">
-      <h4>&nbsp;Press the info button again to close!</h4>
+      <h4>Press the info button again to close!</h4>
       {information}
     </div>
   );
