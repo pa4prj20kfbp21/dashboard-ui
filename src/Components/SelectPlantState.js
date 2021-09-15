@@ -13,10 +13,10 @@ function SelectPlantState(props) {
 
   try {
     buttonRender = props.name ? 
-    <Button variant="contained" href={`/monitor_result?date=${props.date}&name=${props.name}`} style={{textTransform: "none"}}>
+    <Button variant="contained" href={`/monitor_result?id=${props.objectId}`} style={{textTransform: "none"}}>
       <Typography variant="subtitle1">{props.name}</Typography>
     </Button> : 
-    <Button variant="contained" href={`/monitor_result?date=${props.date}`} style={{textTransform: "none"}}>
+    <Button variant="contained" href={`/monitor_result?id=${props.objectId}`} style={{textTransform: "none"}}>
       <Typography variant="subtitle1">Data for<br />{props.date}</Typography>
     </Button>;
   } catch (err) {
