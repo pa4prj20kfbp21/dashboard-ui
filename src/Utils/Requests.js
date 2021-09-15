@@ -72,6 +72,17 @@ export default class Requests {
     return response;
   }
 
+  static async fetchObjectInfo(id){
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/object-data/info/${id}`, {
+      headers: {
+        Accept: "application/json; charset=utf-8"
+      },
+      method: "GET"
+    });
+
+    return response;
+  }
+
   static async fetchDetailedInfoAboutPlantPart(id){
     const response = await fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/plant-parts/id/${id}`, {
       headers: {

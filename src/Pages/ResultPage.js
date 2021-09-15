@@ -8,6 +8,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import InfoDisplay from "../Components/InfoDisplay";
 import LabelBox from "../Components/LabelBox";
 import Requests from "../Utils/Requests";
+import PopUpCommonInfo from "../Components/PopUpCommonInfo";
 import "./ResultPage.css";
 
 /*
@@ -31,9 +32,14 @@ function ResultPage() {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [information, setInformation] = useState({ Data: {}, loading: true });
   const [imageSelection, setImageSelection] = useState(0);
+  const [showCommon, setShowCommon] = useState(false);
 
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
+  };
+
+  const showCommonInfo = () => {
+    setShowCommon(!showCommon);
   };
 
   const history = useHistory();
@@ -48,6 +54,7 @@ function ResultPage() {
     const imageOptions = data.RGBImages;
     const monitorDate = data.Name || data.Date;
     const objectsInfo = [];
+    const environemtInfoId = data.EnvironmentConditions;
 
     const eagerGetImageData = await Requests.eagerFetchImageInfo(imageOptions[imageSelection]);
     data = eagerGetImageData.ok ? await eagerGetImageData.json() : undefined;
@@ -68,6 +75,7 @@ function ResultPage() {
 
       setInformation({
         Data: {
+          EnvInfoId: environemtInfoId,
           Name: monitorDate,
           ImageOptions: imageOptions,
           ImageURL: Requests.imageURLBuild(data.ImageURL),
@@ -102,6 +110,7 @@ function ResultPage() {
 
       setInformation({
         Data: {
+          EnvInfoId: infoData.EnvInfoId,
           Name: infoData.Name,
           ImageOptions: infoData.ImageOptions,
           ImageURL: Requests.imageURLBuild(data.ImageURL),
@@ -159,7 +168,7 @@ function ResultPage() {
           <IconButton aria-label="Forward" onClick={() => moveImageSelection(true)} variant="contained">
             <ArrowForwardIosIcon />
           </IconButton>
-          <IconButton aria-label="Information" variant="contained">
+          <IconButton aria-label="Information" onClick={showCommonInfo} variant="contained">
             <InfoIcon />
           </IconButton>
         </Toolbar>
@@ -188,6 +197,7 @@ function ResultPage() {
           width={cursorPosition["width"]}
         />}
       </div>
+      {showCommon && information.Data.EnvInfoId ? <PopUpCommonInfo infoId={information.Data.EnvInfoId}/> : <></>}
     </div>
   );
 }

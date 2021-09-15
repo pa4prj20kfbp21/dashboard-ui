@@ -13,6 +13,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
 import Requests from "../Utils/Requests";
 import Paper from "@material-ui/core/Paper";
+import PopUpCommonInfo from "../Components/PopUpCommonInfo";
 import "./FruitTable.css";
 
 
@@ -40,6 +41,7 @@ function FruitTable() {
   const [information, setInformation] = useState({ Data: {Results: []}, loading: true });
   const [showPicture, setShowPicture] = useState(defaultNoShowPicture);
   const [pictureWindow, setPictureWindow] = useState(<></>);
+  const [showCommon, setShowCommon] = useState(false);
 
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -61,6 +63,10 @@ function FruitTable() {
 
   const exitPictureView = () => {
     setShowPicture(defaultNoShowPicture);
+  };
+
+  const showCommonInfo = () => {
+    setShowCommon(!showCommon);
   };
 
   const convertJSONtoReadable = (data) => {
@@ -120,10 +126,10 @@ function FruitTable() {
             </IconButton>
             <h3>
               &nbsp;&nbsp;&nbsp;Table for&nbsp;
-              {information.Data.EasyId > -1 ? `a plant with ID of ${information.Data.EasyId} ` : "an item that is still loading or not available!"}
+              {information.Data.EasyId > -1 ? `a plant part with ID of ${information.Data.EasyId} ` : "an item that is still loading or not available!"}
             </h3>
           </Box>
-          <IconButton aria-label="Information" variant="contained">
+          <IconButton aria-label="Information" onClick={showCommonInfo} variant="contained">
             <InfoIcon />
           </IconButton>
         </Toolbar>
@@ -160,6 +166,7 @@ function FruitTable() {
           </TableContainer>
         </div>
         {pictureWindow}
+        {showCommon ? <PopUpCommonInfo info={{"Name": information.Data.Name, "EasyID": information.Data.EasyId}}/> : <></>}
       </div>
     </div>
   );

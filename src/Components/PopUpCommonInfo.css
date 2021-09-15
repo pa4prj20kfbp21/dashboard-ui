@@ -1,0 +1,10 @@
+.PopUpCommonInfo {
+  display: inline-block;
+  position: absolute;
+  width: 40%;
+  overflow-y: scroll;
+  top: 80px; 
+  margin: 10vh 30vw 10vh 30vw;
+  background-color: white;
+  border: black 5px solid;
+}
