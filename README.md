@@ -2,7 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This project also contains a linter that can be used in Visual Studio code with the [ESLint](https://github.com/Microsoft/vscode-eslint) extension installed.
+
+Before starting the application, you must have [NodeJS](https://nodejs.org/en/download/) installed (v12+) along with NPM (Node Package Manager).
+
 ## Available Scripts
+
+You must run `npm install` before you run any scripts below.
+
+You can also set environment variables. One example setup is in `.env.example` file.
 
 In the project directory, you can run:
 
