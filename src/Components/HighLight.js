@@ -11,7 +11,7 @@ import "./HighLight.css";
 
 
   Example HTML component:
-  <Highlight X={100} Y={150} height={100} width={100} color={"blue"} id={1} />
+  <HighLight X={100} Y={150} height={100} width={100} color={"blue"} id={1} />
 */
 function HighLight(props) {
 
